@@ -19,8 +19,7 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_lb" "alb" {
     name = "CSDCNonProductionALB"
-    internal = false
-    # internal = true
+    internal = true
     load_balancer_type = "application"
     security_groups = [aws_security_group.alb_sg.id]
     subnets = [var.subnet_id_1, var.subnet_id_2]

@@ -70,8 +70,7 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "AssociatePublicIpAddress"
-    # value     = var.associate_public_ip
-    value = "true"
+    value     = var.associate_public_ip
   }
 
   setting {

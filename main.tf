@@ -1,11 +1,9 @@
 module "csdc_alb" {
     source = "./csdc-microservices/common/alb"
     vpc_id = var.vpc_id
-    subnet_id_1 = var.public_subnet_id_1
-    subnet_id_2 = var.public_subnet_id_2
     target_id = element(module.test_app.instances, 0)
-    # subnet_id_1 = var.subnet_id_1
-    # subnet_id_2 = var.subnet_id_2
+    subnet_id_1 = var.subnet_id_1
+    subnet_id_2 = var.subnet_id_2
 }
 
 # module "csdc_nlb" {
