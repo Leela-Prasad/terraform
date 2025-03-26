@@ -70,7 +70,8 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "AssociatePublicIpAddress"
-    value     = var.associate_public_ip
+    # value     = var.associate_public_ip
+    value = "true"
   }
 
   setting {
@@ -89,6 +90,12 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "LoadBalancerType"
     value     = "application"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MinSize"
+    value     = "2"
   }
 
   setting {
@@ -148,7 +155,7 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   setting {
     namespace = "aws:elasticbeanstalk:environment:process:default"
     name = "HealthCheckPath"
-    value = "/test"
+    value = "/logger/actuator/health"
   }
 
   setting {

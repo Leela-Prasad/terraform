@@ -10,6 +10,10 @@ variable "subnet_id_2" {
   type = string
 }
 
-variable "target_id" {
+# variable "target_id" {
+#   type = string
+# }
+
+variable "ebs_env_id" {
   type = string
 }

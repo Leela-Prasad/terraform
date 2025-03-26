@@ -19,7 +19,8 @@ resource "aws_security_group" "alb_sg" {
 
 resource "aws_lb" "alb" {
     name = "CSDCNonProductionALB"
-    internal = true
+    internal = false
+    # internal = true
     load_balancer_type = "application"
     security_groups = [aws_security_group.alb_sg.id]
     subnets = [var.subnet_id_1, var.subnet_id_2]
@@ -32,7 +33,7 @@ resource "aws_lb_target_group" "alb_tg" {
   vpc_id = var.vpc_id
 
   health_check {
-    path = "/test"
+    path = "/logger/actuator/health"
     protocol = "HTTP"
     matcher = "200"
   }
@@ -49,8 +50,19 @@ resource "aws_lb_listener" "alb_listener" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "alb_to_instances" {
-  target_group_arn = aws_lb_target_group.alb_tg.arn
-  port = 8080
-  target_id = var.target_id
+resource "aws_lb_listener_rule" "rule1" {
+  listener_arn = aws_lb_listener.alb_listener.arn
+  priority = 9
+
+  condition {
+    path_pattern {
+      values = ["/logger/*"]
+    }
+  }
+
+  action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.alb_tg.arn
+  }
+  
 }

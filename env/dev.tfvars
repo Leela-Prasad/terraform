@@ -18,7 +18,7 @@ ebs_domain_prefix   = "springbootapp"
 
 app_version   = "1.0.0"
 app_s3_bucket = "springboot-microservices-artifacts"
-app_s3_path   = "test/test-1.0-SNAPSHOT.war"
+app_s3_path   = "test/test-1.0-SNAPSHOT.jar"
 
 service_role         = "arn:aws:iam::117915829123:role/aws-elasticbeanstalk-service-role"
 ec2_instance_profile = "arn:aws:iam::117915829123:instance-profile/aws-elasticbeanstalk-ec2-role"

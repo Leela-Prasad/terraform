@@ -1,9 +1,10 @@
 module "csdc_alb" {
     source = "./csdc-microservices/common/alb"
     vpc_id = var.vpc_id
-    target_id = element(module.test_app.instances, 0)
-    subnet_id_1 = var.subnet_id_1
-    subnet_id_2 = var.subnet_id_2
+    # target_id = element(module.test_app.instances, 0)
+    ebs_env_id = module.test_app.ebs_env_id
+    subnet_id_1 = var.public_subnet_id_1
+    subnet_id_2 = var.public_subnet_id_2
 }
 
 # module "csdc_nlb" {
@@ -46,4 +47,22 @@ module "test_app" {
    health_reporting_system_type      = var.health_reporting_system_type
    ec2_key_pair                      = var.ec2_key_pair
    test_key                          = var.test_key
+}
+
+# resource "aws_lb_target_group_attachment" "alb_to_instances" {
+#   target_group_arn = module.csdc_alb.alb_tg_arn
+#   port = 8080
+#   count = length(module.test_app.instances)
+#   target_id = module.test_app.instances[count.index]
+
+#   depends_on = [ module.test_app.instances ]
+# }
+
+resource "aws_lb_target_group_attachment" "alb_to_instances" {
+    for_each         = toset(module.test_app.instances)
+  target_group_arn = module.csdc_alb.alb_tg_arn
+  port = 8080
+  target_id = each.value
+
+  depends_on = [ module.test_app ]
 }

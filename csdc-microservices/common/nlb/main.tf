@@ -13,7 +13,7 @@ resource "aws_lb_target_group" "nlb_tg" {
   vpc_id = var.vpc_id
 
   health_check {
-    path = "/test"
+    path = "/logger/actuator/health"
     protocol = "HTTP"
     matcher = "200-399"
   }
