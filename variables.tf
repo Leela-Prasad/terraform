@@ -115,3 +115,23 @@ variable "health_reporting_system_type" {
 variable "ec2_key_pair" {
   type = string
 }
+
+variable "internal_private_cert_path" {
+  type = string
+}
+
+variable "internal_public_cert_path" {
+  type = string
+}
+
+variable "external_private_cert_path" {
+  type = string
+}
+
+variable "external_public_cert_path" {
+  type = string
+}
+
+variable "min_instances" {
+  type = string
+}

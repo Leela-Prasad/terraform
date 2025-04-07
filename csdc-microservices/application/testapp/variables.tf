@@ -97,3 +97,11 @@ variable "health_reporting_system_type" {
 variable "ec2_key_pair" {
   type = string
 }
+
+variable "cert_arn" {
+  type = string
+}
+
+variable "min_instances" {
+  type = string
+}

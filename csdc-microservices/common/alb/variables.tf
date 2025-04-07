@@ -17,3 +17,7 @@ variable "subnet_id_2" {
 variable "ebs_env_id" {
   type = string
 }
+
+variable "cert_arn" {
+  type = string
+}

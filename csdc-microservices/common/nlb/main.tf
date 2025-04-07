@@ -8,20 +8,20 @@ resource "aws_lb" "nlb" {
 resource "aws_lb_target_group" "nlb_tg" {
   target_type = "alb"
   name = "CSDCNonProductionNLBTG"
-  port = 8080
+  port = 443
   protocol = "TCP"
   vpc_id = var.vpc_id
 
   health_check {
     path = "/logger/actuator/health"
-    protocol = "HTTP"
+    protocol = "HTTPS"
     matcher = "200-399"
   }
 }
 
 resource "aws_lb_listener" "nlb_listener" {
   load_balancer_arn = aws_lb.nlb.arn
-  port = 8080
+  port = 443
   protocol = "TCP"
 
   default_action {

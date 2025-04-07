@@ -16,8 +16,8 @@ resource "aws_security_group" "eb_sg" {
   vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 8443
+    to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -95,7 +95,7 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   setting {
     namespace = "aws:autoscaling:asg"
     name      = "MinSize"
-    value     = "2"
+    value     = var.min_instances
   }
 
   setting {
@@ -111,31 +111,37 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   }
 
     setting {
-    namespace = "aws:elbv2:listener:8080"
+    namespace = "aws:elbv2:listener:443"
     name      = "Protocol"
-    value     = "HTTP"
+    value     = "HTTPS"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name = "SSLCertificateArns"
+    value = var.cert_arn
   }
 
   setting {
     namespace = "aws:elbv2:listener"
     name      = "InstanceProtocol"
-    value     = "HTTP"
+    value     = "HTTPS"
   }
 
   setting {
     namespace = "aws:elbv2:listener"
     name      = "InstancePort"
-    value     = "8080"
+    value     = "8443"
   }
 
   setting {
-    namespace = "aws:elbv2:listener:8080"
+    namespace = "aws:elbv2:listener:443"
     name      = "ListenerEnabled"
     value     = "true"
   }
 
   setting {
-    namespace = "aws:elbv2:listener:8080"
+    namespace = "aws:elbv2:listener:443"
     name      = "Rules"
     value     = "default"
   }
@@ -143,13 +149,13 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
   setting {
     namespace = "aws:elasticbeanstalk:environment:process:default"
     name = "Port"
-    value = "8080"
+    value = "8443"
   }
 
   setting {
     namespace = "aws:elasticbeanstalk:environment:process:default"
     name = "Protocol"
-    value = "HTTP"
+    value = "HTTPS"
   }
 
   setting {

@@ -1,11 +1,11 @@
-vpc_id               = "vpc-01624df164089eeca"
+vpc_id = "vpc-01624df164089eeca"
 
 # public subnets
-public_subnet_id_1           = "subnet-079764aaca35ec7ef"
+public_subnet_id_1 = "subnet-079764aaca35ec7ef"
 public_subnet_id_2 = "subnet-0ac16563282b262ec"
 
 # private subnets
-subnet_id_1           = "subnet-0d6d17fce15ea79a3"
+subnet_id_1 = "subnet-0d6d17fce15ea79a3"
 subnet_id_2 = "subnet-06275476863089ffb"
 
 
@@ -41,5 +41,12 @@ maintenance_window_time      = "Sat:01:00"
 platform_update_level        = "minor"
 health_reporting_system_type = "enhanced"
 ec2_key_pair                 = "test-key-pair"
+min_instances                = "2"
 
 test_key = "TestValue239"
+
+internal_private_cert_path = "./csdc-microservices/common/certs/internal/private_net_key.key"
+internal_public_cert_path  = "./csdc-microservices/common/certs/internal/public_net_cert.pem"
+
+external_private_cert_path = "./csdc-microservices/common/certs/external/private_com_key.key"
+external_public_cert_path  = "./csdc-microservices/common/certs/external/public_com_cert.pem"
