@@ -41,7 +41,7 @@ maintenance_window_time      = "Sat:01:00"
 platform_update_level        = "minor"
 health_reporting_system_type = "enhanced"
 ec2_key_pair                 = "test-key-pair"
-min_instances                = "2"
+min_instances                = "1"
 
 test_key = "TestValue239"
 

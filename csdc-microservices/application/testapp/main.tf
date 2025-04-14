@@ -30,6 +30,29 @@ resource "aws_security_group" "eb_sg" {
   }
 }
 
+# data "aws_secretsmanager_secret" "secret" {
+#   name = "test-secret"
+# }
+
+# data "aws_secretsmanager_secret_version" "secret_version" {
+#   secret_id = data.aws_secretsmanager_secret.secret.id
+# }
+
+# data "aws_region" "current" {
+
+# }
+
+# data "aws_caller_identity" "current" {
+
+# }
+
+# locals {
+#   secret_arn = data.aws_secretsmanager_secret.secret.arn
+#   secret_key = "apps/forms/TEST_KEY"
+#   # secret_json = jsondecode(data.aws_secretsmanager_secret_version.secret_version.secret_string)
+#   # test_key_value = local.secret_json["apps"]["forms"]["TEST_KEY"]
+# }
+
 resource "aws_elastic_beanstalk_environment" "app_env" {
   application         = aws_elastic_beanstalk_application.app.name
   name                = var.environment_name
@@ -61,10 +84,17 @@ resource "aws_elastic_beanstalk_environment" "app_env" {
     value     = aws_security_group.eb_sg.id
   }
 
+  # setting {
+  #   namespace = "aws:elasticbeanstalk:application:environment"
+  #   name      = "TEST_KEY"
+  #   value     = var.test_key
+  # }
+
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "TEST_KEY"
-    value     = var.test_key
+    value     = "/aws/reference/secretsmanager/test-secret:apps.forms.TEST_KEY"
+    # value     = "{\"Ref\": \"arn:aws:secretsmanager:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:secret:${local.secret_arn}::${local.secret_key}\"}"
   }
 
   setting {

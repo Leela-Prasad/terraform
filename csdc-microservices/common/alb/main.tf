@@ -48,8 +48,26 @@ resource "aws_lb_listener" "alb_listener" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_tg.arn
+    target_group_arn = aws_lb_target_group.lambda_tg.arn
   }
 }
 
+
+resource "aws_lb_target_group" "lambda_tg" {
+  name        = "lambda-tg"
+  target_type = "lambda"
+}
+
+resource "aws_lambda_permission" "allow_alb" {
+  statement_id  = "AllowExecutionFromALB"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_function_name
+  principal     = "elasticloadbalancing.amazonaws.com"
+  source_arn    = aws_lb_target_group.lambda_tg.arn
+}
+
+resource "aws_lb_target_group_attachment" "lambda_attach" {
+  target_group_arn = aws_lb_target_group.lambda_tg.arn
+  target_id        = var.lambda_arn
+}
 

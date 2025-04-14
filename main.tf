@@ -1,10 +1,12 @@
 module "csdc_alb" {
-  source      = "./csdc-microservices/common/alb"
-  vpc_id      = var.vpc_id
-  ebs_env_id  = module.test_app.ebs_env_id
-  subnet_id_1 = var.public_subnet_id_1
-  subnet_id_2 = var.public_subnet_id_2
-  cert_arn    = module.internal_acm.certificate_arn
+  source               = "./csdc-microservices/common/alb"
+  vpc_id               = var.vpc_id
+  ebs_env_id           = module.test_app.ebs_env_id
+  subnet_id_1          = var.public_subnet_id_1
+  subnet_id_2          = var.public_subnet_id_2
+  cert_arn             = module.internal_acm.certificate_arn
+  lambda_function_name = module.lambda.lambda_function_name
+  lambda_arn           = module.lambda.lambda_function_arn
 }
 
 module "csdc_nlb" {
@@ -21,7 +23,7 @@ module "csdc_vpclink" {
 }
 
 module "internal_csdc_route53" {
-  source = "./csdc-microservices/common/route53"
+  source           = "./csdc-microservices/common/route53"
   csdc_hosted_zone = "apinextgen.astrazeneca.net"
 }
 
@@ -35,6 +37,10 @@ module "external_acm" {
   source            = "./csdc-microservices/common/acm"
   private_cert_path = var.external_private_cert_path
   public_cert_path  = var.external_public_cert_path
+}
+
+module "lambda" {
+  source = "./csdc-microservices/application/lambda/test-lambda"
 }
 
 module "test_app" {
